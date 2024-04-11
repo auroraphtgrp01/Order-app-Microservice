@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="container">
+    <a routerLink="/">
+      <h1 class="logo">
+        <img
+          src="https://www.ebizneeds.com/blog/wp-content/uploads/2022/04/DoorDash-_25-removebg-preview-min.png"
+          alt=""
+          style="height: 40px; scale: 2.5; margin-left: 100px"
+        />
+      </h1>
+    </a>
+    <ul class="nav-links">
+      <ng-container *ngIf="user; else notLoggedIn">
+        <li style="margin-right: 50px">{{ user }}</li>
+        <li style="margin-right: 50px">
+          <a (click)="logout()" style="cursor: pointer">LogOut</a>
+        </li>
+      </ng-container>
+      <ng-template #notLoggedIn>
+        <li>
+          <a routerLink="/login">Login</a>
+          <a routerLink="/register" style="margin-right: 50px">Register</a>
+        </li>
+      </ng-template>
+    </ul>
+  </div>
+</nav>

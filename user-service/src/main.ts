@@ -1,0 +1,25 @@
+import { NestFactory, Reflector } from '@nestjs/core';
+import { AppModule } from './app.module';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { KAFKA_CONFIG } from 'kafka-config';
+import { ErorrHandlerInterceptor } from './interceptors/errorTransformer.interceptor';
+async function bootstrap() {
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: ['kafka:9092'],
+          clientId: 'api-gateway',
+        },
+        consumer: {
+          groupId: 'auth-service',
+        },
+      },
+    },
+  );
+  app.useGlobalInterceptors(new ErorrHandlerInterceptor());
+  await app.listen();
+}
+bootstrap();

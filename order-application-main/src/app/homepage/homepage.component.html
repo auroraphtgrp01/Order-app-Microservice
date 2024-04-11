@@ -1,0 +1,33 @@
+<div class="container">
+  <div>
+    <!-- <img
+      src="https://cdn.tgdd.vn/hoi-dap/1355217/banner-tgdd-800x300.jpg"
+      alt=""
+    /> -->
+  </div>
+  <div style="display: flex">
+    <div class="container-app">
+      <mat-card
+        class="product-card mt-5"
+        style="flex-grow: 1"
+        *ngFor="let product of products"
+      >
+        <a
+          style="display: flex; flex-wrap: wrap"
+          [routerLink]="['/product', product.product_id]"
+        >
+          <img
+            mat-card-image
+            src="{{ product.image_paths }}"
+            alt="Hình ảnh sản phẩm"
+            style="height: 200px; width: auto"
+          />
+          <mat-card-content>
+            <h2 mat-card-title>{{ product.product_name }}</h2>
+            <p mat-card-subtitle>Giá: {{ product.variants[0].price }}</p>
+          </mat-card-content>
+        </a>
+      </mat-card>
+    </div>
+  </div>
+</div>

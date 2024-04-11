@@ -1,0 +1,208 @@
+<div class="container" style="margin-top: 50px">
+  <div style="display: flex">
+    <mat-card style="flex: 6">
+      <mat-card-header style="display: flex">
+        <div style="flex: 4">
+          <img
+            *ngIf="
+              productInfo.image_paths && productInfo.image_paths.length > 0
+            "
+            [src]="productInfo.image_paths[0]"
+            alt=""
+            style="height: 400px; width: 300px"
+          />
+        </div>
+        <div style="flex: 6">
+          <div>
+            <h1>
+              <b>Product Name: {{ productInfo.product_name }}</b>
+            </h1>
+          </div>
+          <div style="margin-top: 20px">
+            Price: {{ formatPrice(selectedVariant?.price) }}
+          </div>
+          <div style="margin-top: 20px">
+            In Stock: {{ selectedVariant?.quantities }}
+          </div>
+          <div style="margin-top: 2ch">
+            Description: {{ productInfo.product_description }}
+          </div>
+          <div style="margin-top: 20px">Variants:</div>
+          <div style="margin-top: 20px">
+            <button
+              mat-flat-button
+              [color]="selectedVariant === variant ? 'accent' : 'primary'"
+              style="margin-right: 10px"
+              *ngFor="let variant of productInfo.variants"
+              (click)="selectVariant(variant)"
+            >
+              {{ variant.color }} - {{ variant.type }}
+            </button>
+          </div>
+          <div style="margin-top: 20px">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Quantities:</mat-label>
+                <input
+                  matInput
+                  required
+                  type="number"
+                  (input)="calculateTotalPrice($event)"
+                  [(ngModel)]="selectedVariantInputValue"
+                  [max]="maxQuantity"
+                  [min]="0"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+          <div style="margin-top: 10px">
+            <button
+              mat-flat-button
+              color="warn"
+              style="width: 210px"
+              (click)="addToCard()"
+            >
+              Add To Cart
+            </button>
+          </div>
+        </div>
+      </mat-card-header>
+    </mat-card>
+    <mat-card style="margin-left: 10px; padding-bottom: 20px; flex: 4">
+      <mat-card-header style="text-align: center; justify-content: center">
+        <h1 style="font-size: 2rem" class="text-red">
+          <b> ORDER BILL </b>
+        </h1>
+      </mat-card-header>
+      <mat-card-header style="display: flex">
+        <div style="flex: 6">
+          <mat-card style="padding-bottom: 20px">
+            <mat-card-header>
+              <table
+                mat-table
+                [dataSource]="dataSource"
+                class="mat-elevation-z8"
+                style="margin-top: 20px"
+              >
+                <ng-container matColumnDef="index">
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-elevation-z8"
+                  >
+                    <b>No.</b>
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="mat-elevation-z8"
+                    class="mat-elevation-z8"
+                  >
+                    {{ element.index }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="variant" class="mat-elevation-z8">
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-elevation-z8"
+                  >
+                    <b>Variant</b>
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="mat-elevation-z8"
+                  >
+                    {{ element.variant }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="price" class="mat-elevation-z8">
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-elevation-z8"
+                  >
+                    <b>Price</b>
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="mat-elevation-z8"
+                  >
+                    {{ formatPrice(element.price) }}
+                  </td>
+                </ng-container>
+                <ng-container
+                  matColumnDef="quantities"
+                  class="mat-elevation-z8"
+                >
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-elevation-z8"
+                  >
+                    <b>Quantities</b>
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="mat-elevation-z8"
+                  >
+                    {{ element.quantities }}
+                  </td>
+                </ng-container>
+                <ng-container
+                  matColumnDef="totalPrice"
+                  class="mat-elevation-z8"
+                >
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="mat-elevation-z8"
+                  >
+                    <b>Total Price</b>
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element"
+                    class="mat-elevation-z8"
+                  >
+                    {{ formatPrice(element.totalPrice) }}
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </mat-card-header>
+      <mat-card-header
+        ><b>
+          NAME: <span class="text-green">{{ userInfo.username }}</span>
+        </b></mat-card-header
+      >
+      <mat-card-header
+        ><b>
+          TOTAL PRICE:
+          <span class="text-red">{{ formatPrice(totalOrder) }}</span>
+        </b></mat-card-header
+      >
+      <mat-card-header style="display: flex; margin-top: 20px">
+        <button
+          (click)="buyNow()"
+          mat-flat-button
+          color="warn"
+          style="width: 300px; justify-content: center; margin: auto"
+        >
+          Buy Now
+        </button>
+      </mat-card-header>
+    </mat-card>
+  </div>
+</div>

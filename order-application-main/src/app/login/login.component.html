@@ -1,0 +1,34 @@
+<div class="container-app">
+  <mat-card>
+    <mat-card-content style="padding: 20px">
+      <div style="display: flex; flex-direction: column; padding: 40px">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>LOGIN</mat-card-title>
+        </mat-card-header>
+        <mat-form-field appearance="outline">
+          <mat-label>Email: </mat-label>
+          <input matInput [(ngModel)]="email" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Password: </mat-label>
+          <input
+            matInput
+            [(ngModel)]="password"
+            [type]="hide ? 'password' : 'text'"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="hide = !hide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide"
+          >
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-flat-button color="primary" (click)="login()">LOGIN</button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
